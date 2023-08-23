@@ -99,16 +99,33 @@ public class BookRepository {
 
 
 
-	public Book updateBook(Book book) {
+	public Book updateBook(Book book) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		String sql = "update book set cost = ?, name = ?, author_name = ? " + " where id = ? ";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setInt(1, book.getCost());
+		statement.setString(2, book.getName());
+		statement.setString(3, book.getAuthorName());
+		statement.setInt(4, book.getId());
+		int result = statement.executeUpdate();
+		
+		return getBookById(book.getId());
 	}
 
 
 
 	public Book deleteBook(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		String sql = "delete from book where id = " + id;
+		
+		Book book = getBookById(id);
+		Statement statement = connection.createStatement();
+		int result = statement.executeUpdate(sql);
+		
+		logger.info("deleteBook method : result: " + result);
+		return book;
 	}
 		
 		
